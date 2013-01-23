@@ -1,10 +1,34 @@
 /*
   Date.toString.js
   
-  © Copyright 2013  James Thoburn http://jthoburn.com, http://runspired.com
-  Available under Creative Commons, no attribution required.
+  Except otherwise declared: © Copyright 2013  James Thoburn http://jthoburn.com, http://runspired.com
+  Available under Creative Commons, no attribution required (but I'd always appreciate love).
+  
+  The beat calculation (I'd never heard of the Internet Beat before) is inspired by http://www.jr.pl/www.quirksmode.org/js/beat.html
+  
+  Timezone based calculations utilize MIT licensed https://bitbucket.org/pellepim/jstimezonedetect/overview
+  For which I've provided an exposed method.  Due to how many timezones there are and all the problems associated, read
+  the Overview linked above for what you'll be getting.
+  
+  
+  
+  ::	NOTE / BEST PRACTICE WARNING	::
+	
+	It is not considered best practice to modify the prototpyes of Native Javascript objects.  Here,
+	while the case could be made that the native Date object is extremely limited in abilities and usefullness
+	I still would not recommend modifying the prototype.  In my own use, the code below is converted
+	for use in a "native object expansion / chaining" library.
+	
+	:: Last Point	::
+	I have run no performance tests on this script, and there's a few things that could stand some optimization.
 
 */
+
+//returns an object with the Olson timezone name, 
+Date.prototype.getTimezone = function() {
+		
+}
+
 Date.prototype.toString = function(f) {
 
   var f   =	String(f);
@@ -42,7 +66,7 @@ Date.prototype.toString = function(f) {
 								var beat = Math.floor(theSeconds/86.4);
 								if (beat > 1000) beat -= 1000;
 								if (beat < 0) beat += 1000;
-								return beat; }, //http://www.jr.pl/www.quirksmode.org/js/beat.html
+								return beat; }, //see http://www.jr.pl/www.quirksmode.org/js/beat.html but altered to use DST detection
 					g	:	function(){ var h = DO.getHours(); if( h == 0) return '12'; return String( h % 12 ); },
 					G	:	function(){ return String( DO.getHours() ); },
 					h	:	function(){ var h = DO.getHours(); if( h == 0) return '12'; h = String(h % 12 ); return (h.length == 1)? '0'+h : h; },
