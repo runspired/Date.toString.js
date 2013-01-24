@@ -14,7 +14,7 @@
   
   ::	NOTE / BEST PRACTICE WARNING	::
 	
-	It is not considered best practice to modify the prototpyes of Native Javascript objects.  Here,
+	It is not considered best practice to modify the prototypes of Native Javascript objects.  Here,
 	while the case could be made that the native Date object is extremely limited in abilities and usefullness
 	I still would not recommend modifying the prototype.  In my own use, the code below is converted
 	for use in a "native object expansion / chaining" library.
@@ -29,11 +29,10 @@ Date.prototype.cachedToString = Date.prototype.toString;
 
 Date.prototype.toString = function formatDate(f) {
 
-  if( !f )
+  if( !f || typeof f != 'string' )
     return this.cachedToString();	// 'D l d Y H:i:s \G\M\TO (T)';
 
-  var	  f   =	String(f)
-   		  i	=	f.length,
+  var	  i	=	f.length,
 		  ret	=	'',
 		  DO	=	this,
 		  _p = function(n,c) {
@@ -260,7 +259,7 @@ Date.prototype.toString = function formatDate(f) {
 					P	:	function(){ var O = m.O(); return (O.substr(0, 3) + ":" + O.substr(3, 2));; },
 					T	:	function(){ var ts = DO.cachedToString(); return ts.substr( ts.indexOf('(') + 1, ts.indexOf(')') -  ts.indexOf('(') - 1); }, //assumes the browser knows it's stuff
 					Z	:	function(){ return -DO.getTimezoneOffset() * 60; },
-					c	:	function(){ DO.toString('Y-m-d\\TH:i:sP'); return undefined; },	//Full Date/Time
+					c	:	function(){ DO.toString('Y-m-d\TH:i:sP'); return undefined; },	//Full Date/Time
 					r	:	function(){ DO.toString('D, d M Y H:i:s O'); return undefined; },
 					U	:	function(){ return DO.getTime() / 1000 | 0 }
 				};
@@ -275,7 +274,7 @@ Date.prototype.toString = function formatDate(f) {
 		}
 		else {
 			if( f.charAt(i) == '\\' ) {
-				if( i>0 && f.length >= i+1 && f.charAt(i-1) == '\\' && f.charAt(i+1) == '\\')
+				if( i>0 && f.charAt(i-1) == '\\' )
 					ret = f.charAt(i) + ret;	
 			}
 			else
