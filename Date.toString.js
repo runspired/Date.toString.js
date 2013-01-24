@@ -195,7 +195,7 @@ Date.prototype.toString = function formatDate(f) {
 					t	:	function(){ return (new Date( m.Y(), m.n() , 0)).getDate(); },
 					L	:	function(){ return ((new Date( m.Y(), 2 , 0)).getDate() == 28)? 0 : 1; }, //year
 					o	:	function(){ var n = m.n(),W = m.W(),Y = m.Y(); return Y + ( n===12 && W < 9 ? 1 : n === 1 && W > 9 ? -1 : 0 ); },
-					Y	:	function(){ return m.Y(); },
+					Y	:	function(){ return DO.getFullYear(); },
 					y	:	function(){ return m.Y() % 1000 % 100; },
 					a	:	function(){ return (( DO.getHours() * 3600 + DO.getMinutes() * 60  + DO.getSeconds() ) > 43200)? 'pm' : 'am'; },	//time
 					A	:	function(){ return (( DO.getHours() * 3600 + DO.getMinutes() * 60  + DO.getSeconds() ) > 43200)? 'PM' : 'AM'; },
