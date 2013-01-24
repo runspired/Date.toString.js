@@ -33,7 +33,8 @@ Date.prototype.toString = function formatDate(f) {
     return this.cachedToString();	// 'D l d Y H:i:s \G\M\TO (T)';
 
   var	  i	=	f.length,
-		  ret	=	'',
+		  rexpr	=	/\\?([a-z])/gi,
+		  ftest =	function(t,s) { return m[t] ? m[t]() : s; },
 		  DO	=	this,
 		  _p = function(n,c) {
 		  			n = n.toString();
@@ -259,29 +260,12 @@ Date.prototype.toString = function formatDate(f) {
 					P	:	function(){ var O = m.O(); return (O.substr(0, 3) + ":" + O.substr(3, 2));; },
 					T	:	function(){ var ts = DO.cachedToString(); return ts.substr( ts.indexOf('(') + 1, ts.indexOf(')') -  ts.indexOf('(') - 1); }, //assumes the browser knows it's stuff
 					Z	:	function(){ return -DO.getTimezoneOffset() * 60; },
-					c	:	function(){ DO.toString('Y-m-d\TH:i:sP'); return undefined; },	//Full Date/Time
-					r	:	function(){ DO.toString('D, d M Y H:i:s O'); return undefined; },
+					c	:	function(){ return 'Y-m-d\\TH:i:sP'.replace( rexpr , ftest ); },	//Full Date/Time
+					r	:	function(){ return 'D, d M Y H:i:s O'.replace( rexpr , ftest );  },
 					U	:	function(){ return DO.getTime() / 1000 | 0 }
 				};
 			
-		
-	while( i > 0 && i-- ) {
-		
-		if( m.hasOwnProperty( f.charAt(i) ) && ( !i || f.charAt(i-1) != '\\') ) {
-			var add = m[ f.charAt(i) ]();
-			if( add !== undefined ) //fix c,r bug
-				ret = add + ret;
-		}
-		else {
-			if( f.charAt(i) == '\\' ) {
-				if( i>0 && f.charAt(i-1) == '\\' )
-					ret = f.charAt(i) + ret;	
-			}
-			else
-				ret = f.charAt(i) + ret;
-		}
-			
-	}
-	return ret;
+	
+	return f.replace( rexpr , ftest );
 	
 };
