@@ -8,7 +8,25 @@ A replacement `Date.toString()` method for Javascript `Date` object that allows 
 
 This method produces formatted strings identical to PHPs Date() class: http://php.net/manual/en/function.date.php
 
-Formatting options:
+License
+==
+Except otherwise declared: © Copyright 2013  James Thoburn http://jthoburn.com, http://runspired.com
+Available under `Creative Commons: no attribution required (CC0)` [but I'd always appreciate love].
+The beat calculation (I'd never heard of the Internet Beat before) credits http://www.jr.pl/www.quirksmode.org/js/beat.html
+Timezone name calculation utilizes modified MIT licensed https://bitbucket.org/pellepim/jstimezonedetect/overview
+Due to how many timezones there are and all the problems associated, read the Overview linked above for what you'll be getting.
+Timezone abbreviation trusts the browser to have gotten it right in the original toString method, and returns a substring from that method.
+  
+NOTE / BEST PRACTICE WARNING
+--
+
+It is not considered best practice to modify the prototypes of Native Javascript objects.  Here,
+while the case could be made that the native Date object is extremely limited in abilities and usefullness
+I still would not recommend modifying the prototype.  In my own use, the code below is converted
+for use in a "native object expansion / chaining" library.
+
+Formatting options
+==
 <table>
 <tr>
   <td>d</td>
@@ -32,7 +50,7 @@ Formatting options:
 </tr>
 <tr>
   <td>N</td>
-  <td>ISO-8601 numeric representation of the day of the week (added in PHP 5.1.0)</td>
+  <td>ISO-8601 numeric representation of the day of the week</td>
   <td>1 (for Monday) through 7 (for Sunday)</td>
 </tr>
 <tr>
@@ -52,8 +70,8 @@ Formatting options:
 </tr>
 <tr>
   <td>W</td>
-  <td>ISO-8601 week number of year, weeks starting on Monday (added in PHP 4.1.0)</td>
-  <td>Example: 42 (the 42nd week in the year)</td>
+  <td>ISO-8601 week number of year, weeks starting on Monday</td>
+  <td>Example: 47 (the 47th week in the year)</td>
 </tr>
 <tr>
   <td>F</td>
@@ -86,18 +104,18 @@ Formatting options:
 </tr>
 <tr>
   <td>o</td>
-  <td>ISO-8601 year number. This has the same value as Y, except that if the ISO week number (W) belongs to the previous or next year, that year is used instead. (added in PHP 5.1.0)</td>
-  <td>Examples: 1999 or 2003</td>
+  <td>ISO-8601 year number. This has the same value as Y, except that if the ISO week number (W) belongs to the previous or next year, that year is used instead.</td>
+  <td>Examples: 1942 or 2047</td>
 </tr>
 <tr>
   <td>Y</td>
   <td>A full numeric representation of a year, 4 digits</td>
-  <td>Examples: 1999 or 2003</td>
+  <td>Examples: 1942 or 2047</td>
 </tr>
 <tr>
   <td>y</td>
   <td>A two digit representation of a year</td>
-  <td>Examples: 99 or 03</td>
+  <td>Examples: 42 or 07</td>
 </tr>
 <tr>
   <td>a</td>
@@ -146,17 +164,17 @@ Formatting options:
 </tr>
 <tr>
   <td>u</td>
-  <td>Microseconds (added in PHP 5.2.2). Note that date() will always generate 000000 since it takes an integer parameter, whereas DateTime::format() does support microseconds.</td>
-  <td>Example: 654321</td>
+  <td>Microseconds (milliseconds * 1000, Javascript has no microsecond capabilities)</td>
+  <td>Example: 647000</td>
 </tr>
 <tr>
   <td>e</td>
-  <td>Timezone identifier (added in PHP 5.1.0)</td>
-  <td>Examples: UTC, GMT, Atlantic/Azores</td>
+  <td>Timezone name: see https://bitbucket.org/pellepim/jstimezonedetect/overview</td>
+  <td>Examples: Etc+GMT+2m America/Denver, Atlantic/Azores</td>
 </tr>
 <tr>
   <td>I</td>
-  <td>(capital i)	Whether or not the date is in daylight saving time</td>
+  <td>(capital i) Whether or not the date is in daylight saving time</td>
   <td>1 if Daylight Saving Time, 0 otherwise.</td>
 </tr>
 <tr>
@@ -166,27 +184,27 @@ Formatting options:
 </tr>
 <tr>
   <td>P</td>
-  <td>Difference to Greenwich time (GMT) with colon between hours and minutes (added in PHP 5.1.3)</td>
+  <td>Difference to Greenwich time (GMT) with colon between hours and minutes</td>
   <td>Example: +02:00</td>
 </tr>
 <tr>
   <td>T</td>
-  <td>Timezone abbreviation</td>
+  <td>Timezone abbreviation [ parsed from Date.cachedToString() ]</td>
   <td>Examples: EST, MDT ...</td>
 </tr>
 <tr>
   <td>Z</td>
-  <td>Timezone offset in seconds.</td>
-  <td>The offset for timezones west of UTC is always negative, and for those east of UTC is always positive.	-43200 through 50400</td>
+  <td>Timezone offset in seconds. The offset for timezones west of UTC is always negative, and for those east of UTC is always positive.</td>
+  <td>-43200 through 50400</td>
 </tr>
 <tr>
   <td>c</td>
-  <td>ISO 8601 date (added in PHP 5)</td>
+  <td>ISO 8601 date</td>
   <td>2004-02-12T15:19:21+00:00</td>
 </tr>
 <tr>
   <td>r</td>
-  <td>» RFC 2822 formatted date
+  <td>» RFC 2822 formatted date</td>
   <td>Example: Thu, 21 Dec 2000 16:01:07 +0200</td>
 </tr>
 <tr>
@@ -196,25 +214,6 @@ Formatting options:
 </tr>
 </table>
 
-
-Except otherwise declared: © Copyright 2013  James Thoburn http://jthoburn.com, http://runspired.com
-Available under `Creative Commons: no attribution required (CC0)` [but I'd always appreciate love].
-  
-The beat calculation (I'd never heard of the Internet Beat before) credits http://www.jr.pl/www.quirksmode.org/js/beat.html
-  
-Timezone name calculation utilizes modified MIT licensed https://bitbucket.org/pellepim/jstimezonedetect/overview
-Due to how many timezones there are and all the problems associated, read the Overview linked above for what you'll be getting.
-  
-Timezone abbreviation trusts the browser to have gotten it right in the original toString method, and returns a substring from that method.
-  
-  
-NOTE / BEST PRACTICE WARNING
---
-
-It is not considered best practice to modify the prototypes of Native Javascript objects.  Here,
-while the case could be made that the native Date object is extremely limited in abilities and usefullness
-I still would not recommend modifying the prototype.  In my own use, the code below is converted
-for use in a "native object expansion / chaining" library.
 	
 Final Point
 --
