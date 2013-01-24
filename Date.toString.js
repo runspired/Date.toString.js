@@ -25,12 +25,12 @@
 */
 
 //cache the old version, we'll also use this for getting the time zone abbreviation
-Date.prototype.cachedToString = Date.prototype.toString;
+Date.prototype['cachedToString'] = Date.prototype.toString;
 
 Date.prototype.toString = function formatDate(f) {
 
   if( !f || typeof f != 'string' )
-    return this.cachedToString();	// 'D l d Y H:i:s \G\M\TO (T)';
+    return this['cachedToString']();	// 'D l d Y H:i:s \G\M\TO (T)';
 
   var	  i	=	f.length,
 		  rexpr	=	/\\?([a-z])/gi,
@@ -178,24 +178,24 @@ Date.prototype.toString = function formatDate(f) {
 					  'Asia/Baghdad':         ['Europe/Minsk']
           			},
 			  m	=	{
-					'd'	:	function(){ return _p( m.['j']() , 2 );  }, 			//day
-					'D'	:	function(){ return m.['l']().slice(0,3); },
+					'd'	:	function(){ return _p( m['j']() , 2 );  }, 			//day
+					'D'	:	function(){ return m['l']().slice(0,3); },
 					'j'	:	function(){ return DO.getDate(); },
-					'l'	:	function(){ return days[ m.['w']() ]; },
-					'N'	:	function(){ return m.['w']() || 7;},
-					'S'	:	function(){ var j = m.['j'](); return j < 4 | j > 20 && (['st', 'nd', 'rd'][ j%10 - 1] || 'th');},
+					'l'	:	function(){ return days[ m['w']() ]; },
+					'N'	:	function(){ return m['w']() || 7;},
+					'S'	:	function(){ var j = m['j'](); return j < 4 | j > 20 && (['st', 'nd', 'rd'][ j%10 - 1] || 'th');},
 					'w'	:	function(){ return DO.getDay(); },
-					'z'	:	function(){ var SD = new Date( m.['Y']() , 0 , 1 ); return Math.round( (DO - SD) / 864e5 ); },
-					'W'	:	function(){ var ST = new Date( m.['Y'](), m.['n']() - 1, m.['j']() - m.['N']() + 3 ), JF = new Date( ST.getFullYear(), 0, 4);  return _p( 1 + Math.round( (ST-JF) / 864e5 / 7 ), 2);  },	//week
+					'z'	:	function(){ var SD = new Date( m['Y']() , 0 , 1 ); return Math.round( (DO - SD) / 864e5 ); },
+					'W'	:	function(){ var ST = new Date( m['Y'](), m['n']() - 1, m['j']() - m['N']() + 3 ), JF = new Date( ST.getFullYear(), 0, 4);  return _p( 1 + Math.round( (ST-JF) / 864e5 / 7 ), 2);  },	//week
 					'F'	:	function(){ return months[ DO.getMonth() ]; }, //month
 					'm'	:	function(){ var m = String( DO.getMonth() + 1 ); return (m.length == 1)? '0'+m : m; },
-					'M'	:	function(){ return m.['F']().slice(0,3); },
+					'M'	:	function(){ return m['F']().slice(0,3); },
 					'n'	:	function(){ return DO.getMonth() + 1; },
-					't'	:	function(){ return (new Date( m.['Y'](), m.['n']() , 0)).getDate(); },
-					'L'	:	function(){ return ((new Date( m.['Y'](), 2 , 0)).getDate() == 28)? 0 : 1; }, //year
-					'o'	:	function(){ var n = m.['n'](),W = m.['W'](),Y = m.['Y'](); return Y + ( n===12 && W < 9 ? 1 : n === 1 && W > 9 ? -1 : 0 ); },
+					't'	:	function(){ return (new Date( m['Y'](), m['n']() , 0)).getDate(); },
+					'L'	:	function(){ return ((new Date( m['Y'](), 2 , 0)).getDate() == 28)? 0 : 1; }, //year
+					'o'	:	function(){ var n = m['n'](),W = m['W'](),Y = m['Y'](); return Y + ( n===12 && W < 9 ? 1 : n === 1 && W > 9 ? -1 : 0 ); },
 					'Y'	:	function(){ return DO.getFullYear(); },
-					'y'	:	function(){ return m.['Y']() % 1000 % 100; },
+					'y'	:	function(){ return m['Y']() % 1000 % 100; },
 					'a'	:	function(){ return (( DO.getHours() * 3600 + DO.getMinutes() * 60  + DO.getSeconds() ) > 43200)? 'pm' : 'am'; },	//time
 					'A'	:	function(){ return (( DO.getHours() * 3600 + DO.getMinutes() * 60  + DO.getSeconds() ) > 43200)? 'PM' : 'AM'; },
 					'B'	:	function(){
@@ -205,20 +205,20 @@ Date.prototype.toString = function formatDate(f) {
 								if (beat > 1000) beat -= 1000;
 								if (beat < 0) beat += 1000;
 								return beat; }, //see http://www.jr.pl/www.quirksmode.org/js/beat.html
-					'g'	:	function(){ return m.['G']() % 12 || 12; },
+					'g'	:	function(){ return m['G']() % 12 || 12; },
 					'G'	:	function(){ return DO.getHours(); },
-					'h'	:	function(){ return _p( m.['g']() , 2 ) ; },
-					'H'	:	function(){ return _p( m.['G']() , 2); },
+					'h'	:	function(){ return _p( m['g']() , 2 ) ; },
+					'H'	:	function(){ return _p( m['G']() , 2); },
 					'i'	:	function(){ return DO.getMinutes(); },
 					's'	:	function(){ return DO.getSeconds(); },
 					'u'	:	function(){ return _p( DO.getMilliseconds() * 1000, 6); },
-					'e'	:	function(){ var	y = m.['Y'](),
+					'e'	:	function(){ var	y = m['Y'](),
 													_offset = function(d) {  var off = -d.getTimezoneOffset(); return (off !== null ? off : 0); },
 													janOff = _offset( new Date(y,0,2) ),
 													julOff = _offset( new Date(y,6,2) ),
       												key;
       											
-      											if( !m.['I']() )
+      											if( !m['I']() )
       												key = janOff;
       											else {
       												if(  janOff < julOff )
@@ -250,15 +250,15 @@ Date.prototype.toString = function formatDate(f) {
       											
 											
 											},	//timezone		::		due to the huge list of timezones, this function really isn't feasible as a non-native, best effort award to the authors credited above
-					'I'	:	function(){  var	y = m.['Y'](),
+					'I'	:	function(){  var	y = m['Y'](),
 													a = new Date( y, 0),	// Jan 1
         											c = Date.UTC( y, 0),	// Jan 1 UTC
         											b = new Date( y, 6),  // Jul 1
         											d = Date.UTC( y, 6); // Jul 1 UTC
       											return ((a - c) !== (b - d)) ? 1 : 0; },
 					'O'	:	function(){  var tzo = DO.getTimezoneOffset(),	a = Math.abs(tzo);	return (tzo > 0 ? "-" : "+") + _p(Math.floor(a / 60) * 100 + a % 60, 4); },
-					'P'	:	function(){ var O = m.['O'](); return (O.substr(0, 3) + ":" + O.substr(3, 2));; },
-					'T'	:	function(){ var ts = DO.cachedToString(); return ts.substr( ts.indexOf('(') + 1, ts.indexOf(')') -  ts.indexOf('(') - 1); }, //assumes the browser knows it's stuff
+					'P'	:	function(){ var O = m['O'](); return (O.substr(0, 3) + ":" + O.substr(3, 2));; },
+					'T'	:	function(){ var ts = DO['cachedToString'](); return ts.substr( ts.indexOf('(') + 1, ts.indexOf(')') -  ts.indexOf('(') - 1); }, //assumes the browser knows it's stuff
 					'Z'	:	function(){ return -DO.getTimezoneOffset() * 60; },
 					'c'	:	function(){ return 'Y-m-d\\TH:i:sP'.replace( rexpr , ftest ); },	//Full Date/Time
 					'r'	:	function(){ return 'D, d M Y H:i:s O'.replace( rexpr , ftest ); },
