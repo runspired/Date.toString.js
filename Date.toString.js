@@ -42,7 +42,7 @@ Date.prototype.toString = function formatDate(f) {
 		  },
 		  days = Array('Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'),
 		  months = Array('January','February','March','April','May','June','July','August','September','October','November','December'),
-          ru_pre_dst_change = new Date(2010, 6, 15, 1, 0, 0, 0),
+          	  ru_pre_dst_change = new Date(2010, 6, 15, 1, 0, 0, 0),
 		  dst_starts = {
                     'America/Denver':       new Date(2011, 2, 13, 3, 0, 0, 0),
                     'America/Mazatlan':     new Date(2011, 3, 3, 3, 0, 0, 0),
@@ -192,8 +192,8 @@ Date.prototype.toString = function formatDate(f) {
 					m	:	function(){ var m = String( DO.getMonth() + 1 ); return (m.length == 1)? '0'+m : m; },
 					M	:	function(){ var months = Array('Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'); return months[ DO.getMonth() ]; },
 					n	:	function(){ return DO.getMonth() + 1; },
-					t	:	function(){ var EOM = new Date( m.Y(), m.n() , 0); return String( EOM.getDate() ); },
-					L	:	function(){ var EOF = new Date( m.Y(), 2 , 0); return (EOF.getDate() == 28)? 0 : 1; }, //year
+					t	:	function(){ return (new Date( m.Y(), m.n() , 0)).getDate(); },
+					L	:	function(){ return ((new Date( m.Y(), 2 , 0)).getDate() == 28)? 0 : 1; }, //year
 					o	:	function(){ var n = m.n(),W = m.W(),Y = m.Y(); return Y + ( n===12 && W < 9 ? 1 : n === 1 && W > 9 ? -1 : 0 ); },
 					Y	:	function(){ return m.Y(); },
 					y	:	function(){ return m.Y() % 1000 % 100; },
@@ -206,12 +206,12 @@ Date.prototype.toString = function formatDate(f) {
 								if (beat > 1000) beat -= 1000;
 								if (beat < 0) beat += 1000;
 								return beat; }, //see http://www.jr.pl/www.quirksmode.org/js/beat.html
-					g	:	function(){ var h = DO.getHours(); if( h == 0) return 12; return h % 12; },
-					G	:	function(){ return String( DO.getHours() ); },
-					h	:	function(){ var h = DO.getHours(); if( h == 0) return '12'; h = String(h % 12 ); return (h.length == 1)? '0'+h : h; },
-					H	:	function(){ var h = String( DO.getHours() ); return (h.length == 1)? '0'+h : h; },
-					i	:	function(){ return String( DO.getMinutes() ); },
-					s	:	function(){ return String( DO.getSeconds() ); },
+					g	:	function(){ return m.G() % 12 || 12; },
+					G	:	function(){ return DO.getHours(); },
+					h	:	function(){ return _p( m.g() , 2 ) ; },
+					H	:	function(){ return _p( m.G() , 2); },
+					i	:	function(){ return DO.getMinutes(); },
+					s	:	function(){ return DO.getSeconds(); },
 					u	:	function(){ return _p( DO.getMilliseconds() * 1000, 6); },
 					e	:	function(){ var	y = m.Y(),
 													_offset = function(d) {  var off = -d.getTimezoneOffset(); return (off !== null ? off : 0); },
