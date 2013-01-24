@@ -188,13 +188,13 @@ Date.prototype.toString = function formatDate(f) {
 					z	:	function(){ var SD = new Date( m.Y() , 0 , 1 ); return Math.round( (DO - SD) / 864e5 ); },
 					//week number (-2) is currently wrong
 					W	:	function(){ var ST = new Date( m.Y(), m.n() - 1, n.j() - m.N() + 3 ), JF = new Date( ST.getFullYear(), 0, 4);  return _p( 1 + Math.round( (ST-JF) / 864e5 / 7 ), 2);  },	//week
-					F	:	function(){ var months = Array('January','February','March','April','May','June','July','August','September','October','November','December'); return months[ DO.getMonth() ]; }, //month
+					F	:	function(){ return months[ DO.getMonth() ]; }, //month
 					m	:	function(){ var m = String( DO.getMonth() + 1 ); return (m.length == 1)? '0'+m : m; },
-					M	:	function(){ var months = Array('Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'); return months[ DO.getMonth() ]; },
+					M	:	function(){ return m.F().slice(0,3); },
 					n	:	function(){ return DO.getMonth() + 1; },
 					t	:	function(){ return (new Date( m.Y(), m.n() , 0)).getDate(); },
 					L	:	function(){ return ((new Date( m.Y(), 2 , 0)).getDate() == 28)? 0 : 1; }, //year
-					o	:	function(){ var n = m.n(),W = m.W(),Y = m.Y(); return Y + ( n===12 && W < 9 ? 1 : n === 1 && W > 9 ? -1 : 0 ); },
+					o	:	function(){ var n = m.n(),W = m.W(),Y = m.Y(); console.log(n); return Y + ( n===12 && W < 9 ? 1 : n === 1 && W > 9 ? -1 : 0 ); },
 					Y	:	function(){ return DO.getFullYear(); },
 					y	:	function(){ return m.Y() % 1000 % 100; },
 					a	:	function(){ return (( DO.getHours() * 3600 + DO.getMinutes() * 60  + DO.getSeconds() ) > 43200)? 'pm' : 'am'; },	//time
