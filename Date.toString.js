@@ -260,8 +260,8 @@ Date.prototype.toString = function formatDate(f) {
 					P	:	function(){ var O = m.O(); return (O.substr(0, 3) + ":" + O.substr(3, 2));; },
 					T	:	function(){ var ts = DO.cachedToString(); return ts.substr( ts.indexOf('(') + 1, ts.indexOf(')') -  ts.indexOf('(') - 1); }, //assumes the browser knows it's stuff
 					Z	:	function(){ return -DO.getTimezoneOffset() * 60; },
-					c	:	function(){ var ND = new Date( DO.valueOf() ); return ND.toString('Y-m-d\TH:i:sP'); },	//Full Date/Time
-					r	:	function(){ var ND = new Date( DO.valueOf() ); return ND.toString('D, d M Y H:i:s O'); },
+					c	:	function(){ console.log('c'); var ND = new Date( DO.valueOf() ); return ND.toString('Y-m-d\TH:i:sP'); },	//Full Date/Time
+					r	:	function(){ console.log('r'); var ND = new Date( DO.valueOf() ); return ND.toString('D, d M Y H:i:s O'); },
 					U	:	function(){ return DO.getTime() / 1000 | 0 }
 				};
 			
