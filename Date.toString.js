@@ -260,19 +260,29 @@ Date.prototype.toString = function formatDate(f) {
 					P	:	function(){ var O = m.O(); return (O.substr(0, 3) + ":" + O.substr(3, 2));; },
 					T	:	function(){ var ts = DO.cachedToString(); return ts.substr( ts.indexOf('(') + 1, ts.indexOf(')') -  ts.indexOf('(') - 1); }, //assumes the browser knows it's stuff
 					Z	:	function(){ return -DO.getTimezoneOffset() * 60; },
-					c	:	function(){ console.log('c'); var ND = new Date( DO.valueOf() ); return ND.toString('Y-m-d\TH:i:sP'); },	//Full Date/Time
-					r	:	function(){ console.log('r'); var ND = new Date( DO.valueOf() ); return ND.toString('D, d M Y H:i:s O'); },
+					c	:	function(){ DO.toString('Y-m-d\\TH:i:sP'); return undefined; },	//Full Date/Time
+					r	:	function(){ DO.toString('D, d M Y H:i:s O'); return undefined; },
 					U	:	function(){ return DO.getTime() / 1000 | 0 }
 				};
 			
 		
 	while( i > 0 && i-- ) {
-		if( m.hasOwnProperty( f.charAt(i) ) && ( !i || f.charAt(i-1) != '\\') )
-			ret = m[ f.charAt(i) ]() + ret;
-		else
-			ret = f.charAt(i) + ret;
+		
+		if( m.hasOwnProperty( f.charAt(i) ) && ( !i || f.charAt(i-1) != '\\') ) {
+			var add = m[ f.charAt(i) ]();
+			if( add !== undefined ) //fix c,r bug
+				ret = add + ret;
+		}
+		else {
+			if( f.charAt(i) == '\\' ) {
+				if( i>0 && f.length >= i+1 && f.charAt(i-1) == '\\' && f.charAt(i+1) == '\\')
+					ret = f.charAt(i) + ret;	
+			}
+			else
+				ret = f.charAt(i) + ret;
+		}
+			
 	}
-	
 	return ret;
 	
 };
