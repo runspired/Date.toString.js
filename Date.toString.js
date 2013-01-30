@@ -209,7 +209,7 @@ Date.prototype.toString = function formatDate(f) {
 					'G'	:	function(){ return DO.getHours(); },
 					'h'	:	function(){ return _p( m['g']() , 2 ) ; },
 					'H'	:	function(){ return _p( m['G']() , 2); },
-					'i'	:	function(){ return DO.getMinutes(); },
+					'i'	:	function(){ return _p( DO.getMinutes() , 2); },
 					's'	:	function(){ return DO.getSeconds(); },
 					'u'	:	function(){ return _p( DO.getMilliseconds() * 1000, 6); },
 					'e'	:	function(){ var	y = m['Y'](),
